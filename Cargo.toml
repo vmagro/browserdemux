@@ -4,3 +4,9 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+anyhow = "1.0.95"
+clap = { version = "4.5.29", features = ["derive"] }
+directories = "5.0"
+serde = { version = "1.0.217", features = ["derive"] }
+toml = "0.8.20"
+url = "2.5.4"
