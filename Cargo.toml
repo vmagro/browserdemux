@@ -2,6 +2,8 @@
 name = "browserdemux"
 version = "0.1.0"
 edition = "2021"
+description = "Configurable URL->Browser router"
+license = "MIT"
 
 [dependencies]
 anyhow = "1.0.95"
@@ -10,3 +12,9 @@ directories = "5.0"
 serde = { version = "1.0.217", features = ["derive"] }
 toml = "0.8.20"
 url = "2.5.4"
+
+[package.metadata.generate-rpm]
+assets = [
+  { source = "target/release/browserdemux", dest = "/usr/bin/browserdemux", mode = "755" },
+  { source = "browserdemux.desktop", dest = "/usr/share/applications/browserdemux.desktop", mode = "644" },
+]

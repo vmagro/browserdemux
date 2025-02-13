@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=browserdemux
-Comment=Configurable router between multiple browsers
+Comment=Configurable URL->Browser router
 TryExec=browserdemux
 Exec=browserdemux %u
 X-MultipleArgs=false
