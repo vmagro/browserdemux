@@ -1,11 +1,12 @@
+use std::os::unix::process::CommandExt;
+use std::process::Command;
+
 use anyhow::Context;
 use anyhow::Error;
 use anyhow::Result;
 use clap::Parser;
 use directories::ProjectDirs;
 use serde::Deserialize;
-use std::os::unix::process::CommandExt;
-use std::process::Command;
 use url::Url;
 
 #[derive(Debug, Clone, Parser)]
