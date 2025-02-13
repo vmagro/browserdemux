@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=browserdemux
+Comment=Configurable router between multiple browsers
+TryExec=browserdemux
+Exec=browserdemux %u
+X-MultipleArgs=false
+Type=Application
+Terminal=false
+NoDisplay=true
+MimeType=x-scheme-handler/http;x-scheme-handler/https
