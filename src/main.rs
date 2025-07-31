@@ -51,12 +51,20 @@ impl Rule {
 #[serde(rename_all = "snake_case")]
 enum Matcher {
     Authority(String),
+    Domain(String),
 }
 
 impl Matcher {
     fn matches(&self, url: &Url) -> bool {
         match self {
             Self::Authority(authority) => authority == url.authority(),
+            Self::Domain(domain) => {
+                if url.authority() == domain {
+                    true
+                } else {
+                    url.authority().ends_with(&format!(".{domain}"))
+                }
+            }
         }
     }
 }
@@ -100,4 +108,32 @@ fn main() -> Result<()> {
         Error::from(config.route(&args.url).command(&args.url).exec())
             .context("while execing browser"),
     )
+}
+
+#[cfg(test)]
+mod tests {
+    use std::str::FromStr;
+
+    use super::*;
+
+    #[test]
+    fn match_authority() {
+        let m = Matcher::Authority("facebook.com".to_owned());
+        assert!(m.matches(&Url::from_str("https://facebook.com").expect("valid url")));
+        assert!(!m.matches(&Url::from_str("https://thefacebook.com").expect("valid url")));
+        assert!(!m.matches(&Url::from_str("https://the.facebook.com").expect("valid url")));
+    }
+
+    #[test]
+    fn match_domain() {
+        let m = Matcher::Domain("facebook.com".to_owned());
+        assert!(m.matches(&Url::from_str("https://facebook.com").expect("valid url")));
+        assert!(!m.matches(&Url::from_str("https://thefacebook.com").expect("valid url")));
+        assert!(m.matches(&Url::from_str("https://the.facebook.com").expect("valid url")));
+        let m = Matcher::Domain("the.facebook.com".to_owned());
+        assert!(!m.matches(&Url::from_str("https://facebook.com").expect("valid url")));
+        assert!(!m.matches(&Url::from_str("https://thefacebook.com").expect("valid url")));
+        assert!(m.matches(&Url::from_str("https://the.facebook.com").expect("valid url")));
+        assert!(m.matches(&Url::from_str("https://drop.the.facebook.com").expect("valid url")));
+    }
 }
